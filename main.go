@@ -13,7 +13,7 @@ import (
 	"github.com/joho/godotenv"
 
 	"github.com/bootdotdev/learn-cicd-starter/internal/database"
-
+	"time"
 	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
 
@@ -91,6 +91,7 @@ func main() {
 	srv := &http.Server{
 		Addr:    ":" + port,
 		Handler: router,
+		ReadHeaderTimeout: time.Duration(500)*time.Millisecond,
 	}
 
 	log.Printf("Serving on port: %s\n", port)
