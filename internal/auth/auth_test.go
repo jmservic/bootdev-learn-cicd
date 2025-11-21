@@ -8,9 +8,9 @@ import (
 
 func Test_GetApiKey(t *testing.T) {
 	type testcase struct {
-		headers http.Header
+		headers   http.Header
 		authToken string
-		err error
+		err       error
 	}
 	testcases := []testcase{
 		{
@@ -18,35 +18,34 @@ func Test_GetApiKey(t *testing.T) {
 				"Authorization": []string{"ApiKey abc88efgh"},
 			},
 			authToken: "abc88efgh",
-			err: nil,
+			err:       nil,
 		},
 		{
-			headers: http.Header{},
+			headers:   http.Header{},
 			authToken: "",
-			err: ErrNoAuthHeaderIncluded,
+			err:       ErrNoAuthHeaderIncluded,
 		},
 		{
 			headers: http.Header{
 				"Authorization": []string{"ApiKey"},
 			},
 			authToken: "",
-			err: ErrMalformedAuthHeader,
-
+			err:       ErrMalformedAuthHeader,
 		},
 		{
 			headers: http.Header{
 				"Authorization": []string{"Apey abc88efgh"},
 			},
 			authToken: "",
-			err: ErrMalformedAuthHeader,
+			err:       ErrMalformedAuthHeader,
 		},
 	}
 
 	for _, tc := range testcases {
 		authToken, err := GetAPIKey(tc.headers)
 		if err != tc.err {
-			t.Errorf("Received err (%v) doesn't match (%v)", 
-				err, tc.err) 
+			t.Errorf("Received err (%v) doesn't match (%v)",
+				err, tc.err)
 		}
 		if authToken != tc.authToken {
 			t.Errorf("Received auth token %s doesn't equal %s",
